@@ -10,8 +10,10 @@ AHammerCollider::AHammerCollider()
 	PrimaryActorTick.bCanEverTick = true;
 	HammerCapsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Hammer Collider"));
 	SetRootComponent(HammerCapsule);
-	HammerCapsule->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	HammerCapsule->SetGenerateOverlapEvents(true);
+	//HammerCapsule->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	//HammerCapsule->SetGenerateOverlapEvents(true);
+	//HammerCapsule->SetSimulatePhysics(true);
+	//HammerCapsule->SetVisibility(true);
 }
 
 // Called when the game starts or when spawned
