@@ -31,5 +31,6 @@ public:
 	void MoveRight(float Value);
 	UFUNCTION()
 	void Fire();
+	void Attack();
 
 };

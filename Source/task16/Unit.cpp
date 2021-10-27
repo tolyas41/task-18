@@ -7,6 +7,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "Damage.h"
 #include "Projectile.h"
+#include "HammerCollider.h"
 #include "Kismet/GameplayStatics.h"
 
 AUnit::AUnit()
@@ -49,7 +50,7 @@ void AUnit::Tick(float DeltaTime)
 
 void AUnit::OnDamage(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
 {
-	if (OtherActor->GetClass() == ProjectileClass)
+	if (OtherActor->GetClass() == ProjectileClass || OtherActor->GetClass() == HammerClass)
 	{
 		DamageToApply = FMath::Min(Health, DamageToApply);
 		Health -= DamageToApply;

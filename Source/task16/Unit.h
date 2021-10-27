@@ -11,6 +11,7 @@
 class UBoxComponent;
 class UStaticMeshComponent;
 class AProjectile;
+class AHammerCollider;
 
 UCLASS()
 class TASK16_API AUnit : public AActor, public IDamage
@@ -31,6 +32,8 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Damage Causer")
 	TSubclassOf<AProjectile> ProjectileClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Damage Causer")
+	TSubclassOf<AHammerCollider> HammerClass;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player")
 	UBoxComponent* BoxComponent;

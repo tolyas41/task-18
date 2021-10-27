@@ -6,6 +6,8 @@
 #include "Components/InputComponent.h"
 #include "Projectile.h"
 #include "SomeFactory.h"
+#include "HammerCollider.h"
+#include "Animation/AnimInstance.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -16,13 +18,21 @@ ASomeCharacter::ASomeCharacter()
 	ProjectileSpawnPoint = CreateDefaultSubobject<USceneComponent>(TEXT("Projectile Spawn Point"));
 	ProjectileSpawnPoint->SetupAttachment(RootComponent);
 
-	bUseControllerRotationYaw = false;
 }
 
 void ASomeCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	GetMesh()->SetAnimationMode(EAnimationMode::AnimationSingleNode);
+	if (HammerClass)
+	{
+		HammerCollider = GetWorld()->SpawnActor<AHammerCollider>(HammerClass);
+		HammerCollider->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("HammerCenter"));
+		HammerCollider->SetOwner(this);
+	}
+
+	//GetMesh()->HideBoneByName(TEXT("weapon_r"), EPhysBodyOp::PBO_None);
 	ASomeFactory* Factory = Cast<ASomeFactory>(UGameplayStatics::GetActorOfClass(GetWorld(), FactoryClass));
 	if (Factory)
 	{
@@ -42,31 +52,12 @@ void ASomeCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (!GetMesh()->IsPlaying())
+	{
+		GetMesh()->GetAnimInstance()->InitializeAnimation();
+	}
 }
 
-//void ASomeCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-//{
-//	Super::SetupPlayerInputComponent(PlayerInputComponent);
-//
-//	//PlayerInputComponent->BindAxis("Rotate", this, &ASomeCharacter::Rotate);
-//	//PlayerInputComponent->BindAxis("MoveForward", this, &ASomeCharacter::MoveForward);
-//	//PlayerInputComponent->BindAxis("MoveRight", this, &ASomeCharacter::MoveRight);
-//	//PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ASomeCharacter::Fire);
-//}
-
-//void ASomeCharacter::Rotate(float Value)
-//{
-//	if (Value)
-//	{
-//		AddActorLocalRotation(FRotator(0, Value, 0));
-//	}
-//}
-//
-//void ASomeCharacter::MoveForward(float Value)
-//{
-//	AddMovementInput(GetActorForwardVector(), Value);
-//}
-//
 void ASomeCharacter::MoveRight(float Value)
 {
 	AddMovementInput(GetActorRightVector(), Value);
@@ -79,6 +70,14 @@ void ASomeCharacter::Fire()
 		FVector SpawnLoc = ProjectileSpawnPoint->GetComponentLocation();
 		FRotator SpawnRot = ProjectileSpawnPoint->GetComponentRotation();
 		AProjectile* ProjectileBullet = GetWorld()->SpawnActor<AProjectile>(ProjectileClass, SpawnLoc, SpawnRot);
+	}
+}
+
+void ASomeCharacter::Attack()
+{
+	if (HammerAttackAnimation)
+	{
+		GetMesh()->PlayAnimation(HammerAttackAnimation, false);
 	}
 }
 
@@ -109,3 +108,4 @@ void ASomeCharacter::Heal(float HealAmount)
 #endif
 	}
 }
+

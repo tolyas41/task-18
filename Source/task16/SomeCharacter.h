@@ -9,6 +9,8 @@
 
 class AProjectile;
 class ASomeFactory;
+class AHammerCollider;
+class UAnimationAsset;
 
 DECLARE_EVENT(ASomeCharacter, FHealEvent)
 
@@ -34,6 +36,8 @@ public:
 	UFUNCTION()
 	void Fire();
 	UFUNCTION()
+	void Attack();
+	UFUNCTION()
 	virtual void OnDamage(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit) override;
 	UFUNCTION()
 	void Heal(float HealAmount);
@@ -44,6 +48,12 @@ public:
 	TSubclassOf<ASomeFactory> FactoryClass;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
 	USceneComponent* ProjectileSpawnPoint;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hammer")
+	TSubclassOf<AHammerCollider> HammerClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hammer")
+	UAnimationAsset* HammerAttackAnimation;
+	UPROPERTY()
+	AHammerCollider* HammerCollider;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Move")
 	float MoveSpeed = 500.0f;
@@ -55,7 +65,7 @@ public:
 	FHealEvent OnHealEvent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Damage")
-	float DamageToApply = 25.0f;
+	float DamageToApply = 5.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Damage")
 	int32 Avoidance = 50;
 
