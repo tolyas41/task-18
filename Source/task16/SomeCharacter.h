@@ -28,11 +28,6 @@ protected:
 public:	
 	virtual void Tick(float DeltaTime) override;
 
-	//virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-	//void Rotate(float Value);
-	//void MoveForward(float Value);
-	void MoveRight(float Value);
 	UFUNCTION()
 	void Fire();
 	UFUNCTION()

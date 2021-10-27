@@ -32,7 +32,6 @@ void ASomeCharacter::BeginPlay()
 		HammerCollider->SetOwner(this);
 	}
 
-	//GetMesh()->HideBoneByName(TEXT("weapon_r"), EPhysBodyOp::PBO_None);
 	ASomeFactory* Factory = Cast<ASomeFactory>(UGameplayStatics::GetActorOfClass(GetWorld(), FactoryClass));
 	if (Factory)
 	{
@@ -56,11 +55,6 @@ void ASomeCharacter::Tick(float DeltaTime)
 	{
 		GetMesh()->GetAnimInstance()->InitializeAnimation();
 	}
-}
-
-void ASomeCharacter::MoveRight(float Value)
-{
-	AddMovementInput(GetActorRightVector(), Value);
 }
 
 void ASomeCharacter::Fire()

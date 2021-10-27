@@ -21,8 +21,6 @@ void ASomePlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	//PlayerTick(DeltaTime);
-	//UpdateRotation(DeltaTime);
 }
 
 

@@ -29,7 +29,6 @@ public:
 	void Rotate(float Value);
 	void MoveForward(float Value);
 	void MoveRight(float Value);
-	UFUNCTION()
 	void Fire();
 	void Attack();
 
