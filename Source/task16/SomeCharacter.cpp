@@ -23,7 +23,12 @@ void ASomeCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	factory->OnSpawnEvent.AddUFunction(this, FName("OnDamage"));
+	ASomeFactory* Factory = Cast<ASomeFactory>(UGameplayStatics::GetActorOfClass(GetWorld(), FactoryClass));
+	if (Factory)
+	{
+		Factory->OnSpawnEvent.AddUFunction(this, FName("OnDamage"));
+	}
+	
 	UWorld* TheWorld = GetWorld();
 	if (TheWorld != nullptr)
 	{
@@ -31,7 +36,6 @@ void ASomeCharacter::BeginPlay()
 		ASomeGameMode* SomeGameMode = Cast<ASomeGameMode>(GameMode);
 		SomeGameMode->OnDeathUnitEvent.AddUFunction(this, FName("Heal"), HealPower);
 	}
-
 }
 
 void ASomeCharacter::Tick(float DeltaTime)
@@ -40,29 +44,29 @@ void ASomeCharacter::Tick(float DeltaTime)
 
 }
 
-void ASomeCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
+//void ASomeCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+//{
+//	Super::SetupPlayerInputComponent(PlayerInputComponent);
+//
+//	//PlayerInputComponent->BindAxis("Rotate", this, &ASomeCharacter::Rotate);
+//	//PlayerInputComponent->BindAxis("MoveForward", this, &ASomeCharacter::MoveForward);
+//	//PlayerInputComponent->BindAxis("MoveRight", this, &ASomeCharacter::MoveRight);
+//	//PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ASomeCharacter::Fire);
+//}
 
-	PlayerInputComponent->BindAxis("Rotate", this, &ASomeCharacter::Rotate);
-	PlayerInputComponent->BindAxis("MoveForward", this, &ASomeCharacter::MoveForward);
-	PlayerInputComponent->BindAxis("MoveRight", this, &ASomeCharacter::MoveRight);
-	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ASomeCharacter::Fire);
-}
-
-void ASomeCharacter::Rotate(float Value)
-{
-	if (Value)
-	{
-		AddActorLocalRotation(FRotator(0, Value, 0));
-	}
-}
-
-void ASomeCharacter::MoveForward(float Value)
-{
-	AddMovementInput(GetActorForwardVector(), Value);
-}
-
+//void ASomeCharacter::Rotate(float Value)
+//{
+//	if (Value)
+//	{
+//		AddActorLocalRotation(FRotator(0, Value, 0));
+//	}
+//}
+//
+//void ASomeCharacter::MoveForward(float Value)
+//{
+//	AddMovementInput(GetActorForwardVector(), Value);
+//}
+//
 void ASomeCharacter::MoveRight(float Value)
 {
 	AddMovementInput(GetActorRightVector(), Value);

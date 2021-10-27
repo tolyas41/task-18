@@ -26,10 +26,10 @@ protected:
 public:	
 	virtual void Tick(float DeltaTime) override;
 
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	//virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	void Rotate(float Value);
-	void MoveForward(float Value);
+	//void Rotate(float Value);
+	//void MoveForward(float Value);
 	void MoveRight(float Value);
 	UFUNCTION()
 	void Fire();
@@ -40,6 +40,8 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Bullets")
 	TSubclassOf<AProjectile> ProjectileClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Factory")
+	TSubclassOf<ASomeFactory> FactoryClass;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
 	USceneComponent* ProjectileSpawnPoint;
 
@@ -49,10 +51,6 @@ public:
 	float RotateSpeed = 5.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Healing")
 	float HealPower = 8.0f;
-
-	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "EventFactory")
-	ASomeFactory* factory;
-
 
 	FHealEvent OnHealEvent;
 
