@@ -10,14 +10,12 @@
 #include "Animation/AnimInstance.h"
 #include "Kismet/GameplayStatics.h"
 
-
 ASomeCharacter::ASomeCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
 	ProjectileSpawnPoint = CreateDefaultSubobject<USceneComponent>(TEXT("Projectile Spawn Point"));
 	ProjectileSpawnPoint->SetupAttachment(RootComponent);
-
 }
 
 void ASomeCharacter::BeginPlay()
@@ -30,6 +28,8 @@ void ASomeCharacter::BeginPlay()
 		HammerCollider = GetWorld()->SpawnActor<AHammerCollider>(HammerClass);
 		HammerCollider->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("HammerCenter"));
 		HammerCollider->SetOwner(this);
+
+		HammerCollider->OnHammerHitEvent.AddUFunction(this, FName("StopAnimation"));
 	}
 
 	ASomeFactory* Factory = Cast<ASomeFactory>(UGameplayStatics::GetActorOfClass(GetWorld(), FactoryClass));
@@ -55,6 +55,12 @@ void ASomeCharacter::Tick(float DeltaTime)
 	{
 		GetMesh()->GetAnimInstance()->InitializeAnimation();
 	}
+
+}
+
+void ASomeCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
+{
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
 void ASomeCharacter::Fire()
@@ -103,3 +109,10 @@ void ASomeCharacter::Heal(float HealAmount)
 	}
 }
 
+void ASomeCharacter::StopAnimation()
+{
+	if (HammerReturnAnimation)
+	{
+		GetMesh()->PlayAnimation(HammerReturnAnimation, false);
+	}
+}

@@ -4,11 +4,12 @@
 #include "Unit.h"
 #include "SomeGameMode.h"
 #include "Components/BoxComponent.h"
-#include "Components/StaticMeshComponent.h"
+//#include "Components/StaticMeshComponent.h"
 #include "Damage.h"
 #include "Projectile.h"
 #include "HammerCollider.h"
 #include "Kismet/GameplayStatics.h"
+//#include "GameFramework/ProjectileMovementComponent.h"
 
 AUnit::AUnit()
 {
@@ -18,8 +19,13 @@ AUnit::AUnit()
 	RootComponent = BoxComponent;
 	BoxComponent->OnComponentHit.AddDynamic(this, &AUnit::OnDamage);
 
-	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
-	StaticMeshComponent->SetupAttachment(BoxComponent);
+	//StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
+	//StaticMeshComponent->SetupAttachment(BoxComponent);
+
+	//ProjectileMoveComp = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile Movement"));
+	//ProjectileMoveComp->InitialSpeed = BallSpeed;
+	//ProjectileMoveComp->MaxSpeed = BallSpeed;
+
 }
 
 void AUnit::BeginPlay()

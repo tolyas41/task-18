@@ -27,7 +27,10 @@ protected:
 
 public:	
 	virtual void Tick(float DeltaTime) override;
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UFUNCTION()
+	void StopAnimation();
 	UFUNCTION()
 	void Fire();
 	UFUNCTION()
@@ -47,6 +50,8 @@ public:
 	TSubclassOf<AHammerCollider> HammerClass;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hammer")
 	UAnimationAsset* HammerAttackAnimation;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hammer")
+	UAnimationAsset* HammerReturnAnimation;
 	UPROPERTY()
 	AHammerCollider* HammerCollider;
 

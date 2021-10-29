@@ -3,6 +3,7 @@
 
 #include "SomePlayerController.h"
 #include "SomeCharacter.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 ASomePlayerController::ASomePlayerController()
 {
