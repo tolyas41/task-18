@@ -4,37 +4,29 @@
 #include "Unit.h"
 #include "SomeGameMode.h"
 #include "Components/BoxComponent.h"
-//#include "Components/StaticMeshComponent.h"
 #include "Damage.h"
 #include "Projectile.h"
 #include "HammerCollider.h"
 #include "Kismet/GameplayStatics.h"
-//#include "GameFramework/ProjectileMovementComponent.h"
 
 AUnit::AUnit()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
 	BoxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("Box Component"));
-	RootComponent = BoxComponent;
-	BoxComponent->OnComponentHit.AddDynamic(this, &AUnit::OnDamage);
-
-	//StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
-	//StaticMeshComponent->SetupAttachment(BoxComponent);
-
-	//ProjectileMoveComp = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile Movement"));
-	//ProjectileMoveComp->InitialSpeed = BallSpeed;
-	//ProjectileMoveComp->MaxSpeed = BallSpeed;
+	SetRootComponent(BoxComponent);
 
 }
 
 void AUnit::BeginPlay()
 {
 	Super::BeginPlay();
+	BoxComponent->OnComponentHit.AddDynamic(this, &AUnit::OnDamage);
 }
 
 void AUnit::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
+	Super::EndPlay(EndPlayReason);
 #if UE_BUILD_DEVELOPMENT
 	UE_LOG(LogTemp, Warning, TEXT("Unit %s is dead"), *(this->GetName()));
 #endif
@@ -42,6 +34,7 @@ void AUnit::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 void AUnit::PostActorCreated()
 {
+	Super::PostActorCreated();
 #if UE_BUILD_DEVELOPMENT
 	UE_LOG(LogTemp, Warning, TEXT("Unit %s arrived"), *(this->GetName()));
 #endif
@@ -51,7 +44,6 @@ void AUnit::PostActorCreated()
 void AUnit::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 void AUnit::OnDamage(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)

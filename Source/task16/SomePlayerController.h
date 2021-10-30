@@ -15,6 +15,7 @@ class TASK16_API ASomePlayerController : public APlayerController
 
 public:
 	ASomePlayerController();
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void OnPossess(APawn* aPawn) override;

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Damage.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "SomeCharacter.generated.h"
 
 class AProjectile;
@@ -27,7 +28,6 @@ protected:
 
 public:	
 	virtual void Tick(float DeltaTime) override;
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UFUNCTION()
 	void StopAnimation();
@@ -70,8 +70,5 @@ public:
 	int32 Avoidance = 50;
 
 private:
-	FRotator CharRotation;
-	FVector MovementDirection;
-	FVector CurrentVelocity;
 	float Health{ 100 };
 };

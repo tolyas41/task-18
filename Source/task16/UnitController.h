@@ -6,12 +6,18 @@
 #include "AIController.h"
 #include "UnitController.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class TASK16_API AUnitController : public AAIController
 {
 	GENERATED_BODY()
-	
+protected:
+	virtual void BeginPlay() override;
+	virtual void OnPossess(APawn* InPawn) override;
+
+public:
+	AUnitController();
+	virtual void Tick(float DeltaTime) override;
+
+	UPROPERTY()
+	APawn* PlayerChar;
 };

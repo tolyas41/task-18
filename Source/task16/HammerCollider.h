@@ -22,7 +22,6 @@ public:
 
 	FOnHammerHitEvent OnHammerHitEvent;
 
-
 	UPROPERTY()
 	UCapsuleComponent* HammerCapsule;
 };

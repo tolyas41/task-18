@@ -27,6 +27,7 @@ void ASomePlayerController::Tick(float DeltaTime)
 
 void ASomePlayerController::OnPossess(APawn* aPawn)
 {
+	Super::OnPossess(aPawn);
 #if UE_BUILD_DEVELOPMENT
 	UE_LOG(LogTemp, Warning, TEXT("Posses DONE"));
 #endif
@@ -56,7 +57,7 @@ void ASomePlayerController::MoveForward(float Value)
 {
 	if (Value)
 	{
-		Character->SetActorRelativeLocation(Character->GetActorLocation() + Character->GetActorForwardVector() * Value * Character->MoveSpeed);
+		Character->AddMovementInput(Character->GetActorForwardVector(), Value);
 	}
 }
 
@@ -64,7 +65,7 @@ void ASomePlayerController::MoveRight(float Value)
 {
 	if (Value)
 	{
-		Character->SetActorRelativeLocation(Character->GetActorLocation() + Character->GetActorRightVector() * Value * Character->MoveSpeed);
+		Character->AddMovementInput(Character->GetActorRightVector(), Value);
 	}
 }
 

@@ -16,13 +16,14 @@ ASomeCharacter::ASomeCharacter()
 
 	ProjectileSpawnPoint = CreateDefaultSubobject<USceneComponent>(TEXT("Projectile Spawn Point"));
 	ProjectileSpawnPoint->SetupAttachment(RootComponent);
+
 }
 
 void ASomeCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	GetMesh()->SetAnimationMode(EAnimationMode::AnimationSingleNode);
+	GetMesh()->SetAnimationMode(EAnimationMode::AnimationBlueprint);
 	if (HammerClass)
 	{
 		HammerCollider = GetWorld()->SpawnActor<AHammerCollider>(HammerClass);
@@ -55,12 +56,6 @@ void ASomeCharacter::Tick(float DeltaTime)
 	{
 		GetMesh()->GetAnimInstance()->InitializeAnimation();
 	}
-
-}
-
-void ASomeCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
 void ASomeCharacter::Fire()
