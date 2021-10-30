@@ -15,7 +15,7 @@ class AHammerCollider;
 //class UProjectileMovementComponent;
 
 UCLASS()
-class TASK16_API AUnit : public AActor, public IDamage
+class TASK16_API AUnit : public APawn, public IDamage
 {
 	GENERATED_BODY()
 	
