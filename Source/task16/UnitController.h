@@ -6,6 +6,8 @@
 #include "AIController.h"
 #include "UnitController.generated.h"
 
+class AUnit;
+
 UCLASS()
 class TASK16_API AUnitController : public AAIController
 {
@@ -20,4 +22,9 @@ public:
 
 	UPROPERTY()
 	APawn* PlayerChar;
+
+	AUnit* ControlledUnit;
+
+	UFUNCTION()
+	void UseAttack();
 };

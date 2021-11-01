@@ -26,7 +26,6 @@ void ASomeFactory::Tick(float DeltaTime)
 
 void ASomeFactory::SpawnUnit()
 {
-	OnSpawnEvent.Broadcast();
 	SpawnLocation = GetActorLocation() + FVector(FMath::RandRange(-400.0f, 400.0f), FMath::RandRange(-400.0f, 400.0f), 0);
 	GetWorld()->SpawnActor<AUnit>(UnitToSpawn, SpawnLocation, FRotator(0, 225.0f, 0));
 }

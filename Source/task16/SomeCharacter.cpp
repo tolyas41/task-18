@@ -3,6 +3,7 @@
 
 #include "SomeCharacter.h"
 #include "SomeGameMode.h"
+#include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
 #include "Projectile.h"
 #include "SomeFactory.h"
@@ -23,7 +24,8 @@ void ASomeCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	GetMesh()->SetAnimationMode(EAnimationMode::AnimationBlueprint);
+	GetCapsuleComponent()->OnComponentHit.AddDynamic(this, &ASomeCharacter::OnDamage);
+	GetMesh()->SetAnimationMode(EAnimationMode::AnimationSingleNode);
 	if (HammerClass)
 	{
 		HammerCollider = GetWorld()->SpawnActor<AHammerCollider>(HammerClass);
@@ -31,12 +33,6 @@ void ASomeCharacter::BeginPlay()
 		HammerCollider->SetOwner(this);
 
 		HammerCollider->OnHammerHitEvent.AddUFunction(this, FName("StopAnimation"));
-	}
-
-	ASomeFactory* Factory = Cast<ASomeFactory>(UGameplayStatics::GetActorOfClass(GetWorld(), FactoryClass));
-	if (Factory)
-	{
-		Factory->OnSpawnEvent.AddUFunction(this, FName("OnDamage"));
 	}
 	
 	UWorld* TheWorld = GetWorld();
@@ -78,19 +74,20 @@ void ASomeCharacter::Attack()
 
 void ASomeCharacter::OnDamage(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
 {
-	int Chance = FMath::RandRange(0, 100);
-	if (Chance > Avoidance)
+
+	if (OtherActor->GetClass() == ProjectileClass)
 	{
 		DamageToApply = FMath::Min(Health, DamageToApply);
 		Health -= DamageToApply;
 #if UE_BUILD_DEVELOPMENT
-		UE_LOG(LogTemp, Warning, TEXT("Char's health left (-) %f"), Health);
+		UE_LOG(LogTemp, Warning, TEXT("Health left %f"), Health);
 #endif
-		if (Health == 0)
-		{
-			Destroy();
-		}
 	}
+	if (Health == 0)
+	{
+		Destroy();
+	}
+	
 }
 
 void ASomeCharacter::Heal(float HealAmount)

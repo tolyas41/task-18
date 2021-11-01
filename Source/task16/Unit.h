@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameFramework/Character.h"
 #include "GameFramework/Actor.h"
 #include "Damage.h"
 #include "Unit.generated.h"
@@ -11,9 +12,10 @@
 class UBoxComponent;
 class AProjectile;
 class AHammerCollider;
+class UAnimationAsset;
 
 UCLASS()
-class TASK16_API AUnit : public APawn, public IDamage
+class TASK16_API AUnit : public ACharacter, public IDamage
 {
 	GENERATED_BODY()
 	
@@ -32,6 +34,10 @@ public:
 	TSubclassOf<AProjectile> ProjectileClass;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Damage Causer")
 	TSubclassOf<AHammerCollider> HammerClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attack")
+	UAnimationAsset* AttackAnimation;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
+	USceneComponent* ProjectileSpawnPoint;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player")
 	UBoxComponent* BoxComponent;
@@ -41,6 +47,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DamageReceived")
 	float DamageToApply = 50.0f;
+
+	UFUNCTION()
+	void Attack();
 
 private:
 	float Health{ 100 };

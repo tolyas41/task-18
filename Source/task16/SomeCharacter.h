@@ -65,7 +65,7 @@ public:
 	FHealEvent OnHealEvent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Damage")
-	float DamageToApply = 5.0f;
+	float DamageToApply = 15.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Damage")
 	int32 Avoidance = 50;
 
