@@ -22,6 +22,6 @@ public:
 
 	FOnHammerHitEvent OnHammerHitEvent;
 
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UCapsuleComponent* HammerCapsule;
 };

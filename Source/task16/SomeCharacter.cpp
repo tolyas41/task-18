@@ -82,6 +82,7 @@ void ASomeCharacter::OnDamage(UPrimitiveComponent* HitComponent, AActor* OtherAc
 #if UE_BUILD_DEVELOPMENT
 		UE_LOG(LogTemp, Warning, TEXT("Health left %f"), Health);
 #endif
+		OtherActor->Destroy();
 	}
 	if (Health == 0)
 	{
@@ -107,4 +108,9 @@ void ASomeCharacter::StopAnimation()
 	{
 		GetMesh()->PlayAnimation(HammerReturnAnimation, false);
 	}
+}
+
+float ASomeCharacter::GetHealth()
+{
+	return Health;
 }

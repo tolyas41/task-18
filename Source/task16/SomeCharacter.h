@@ -69,6 +69,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Damage")
 	int32 Avoidance = 50;
 
-private:
+	UFUNCTION()
+	float GetHealth();
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
 	float Health{ 100 };
+
 };
