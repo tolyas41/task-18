@@ -45,6 +45,12 @@ void AUnit::PostActorCreated()
 void AUnit::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (!GetMesh()->IsPlaying())
+	{
+		GetMesh()->GetAnimInstance()->InitializeAnimation();
+	}
+
 }
 
 void AUnit::OnDamage(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
