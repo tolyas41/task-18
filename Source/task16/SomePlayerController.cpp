@@ -14,14 +14,14 @@ void ASomePlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Character = Cast<ASomeCharacter>(GetPawnOrSpectator());
-	SetViewTarget(Character);
-
+	if (Cast<ASomeCharacter>(GetPawn()))
+	{
+		Character = Cast<ASomeCharacter>(GetPawn());
+	}
 }
 void ASomePlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 
@@ -42,7 +42,6 @@ void ASomePlayerController::SetupInputComponent()
 	InputComponent->BindAxis("MoveRight", this, &ASomePlayerController::MoveRight);
 	InputComponent->BindAction("Fire", IE_Pressed, this, &ASomePlayerController::Fire);
 	InputComponent->BindAction("Attack", IE_Pressed, this, &ASomePlayerController::Attack);
-
 }
 
 void ASomePlayerController::Rotate(float Value)

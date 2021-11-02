@@ -5,8 +5,8 @@
 
 void USomeGameEngine::Init(IEngineLoop* InEngineLoop)
 {
-//#if UE_BUILD_DEVELOPMENT
+#if UE_BUILD_DEVELOPMENT
 	UE_LOG(LogTemp, Warning, TEXT("Game Engine Init"));
-//#endif
+#endif
 }
 

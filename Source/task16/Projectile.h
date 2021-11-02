@@ -21,14 +21,14 @@ protected:
 
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
-		UProjectileMovementComponent* ProjectileMoveComp;
+	UProjectileMovementComponent* ProjectileMoveComp;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
-		UStaticMeshComponent* ProjectileMesh;
+	UStaticMeshComponent* ProjectileMesh;
 
 	UPROPERTY(EditAnywhere, Category = "ProjProps", meta = (AllowPrivateAccess = "true"))
-		float ProjectileSpeed = 1500.0f;
+	float ProjectileSpeed = 1500.0f;
 
 	UPROPERTY(EditAnywhere, Category = "ProjProps", meta = (AllowPrivateAccess = "true"))
-		float ProjectileDamage = 10.0f;
+	float ProjectileDamage = 10.0f;
 };

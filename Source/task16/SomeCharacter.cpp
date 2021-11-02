@@ -17,7 +17,6 @@ ASomeCharacter::ASomeCharacter()
 
 	ProjectileSpawnPoint = CreateDefaultSubobject<USceneComponent>(TEXT("Projectile Spawn Point"));
 	ProjectileSpawnPoint->SetupAttachment(RootComponent);
-
 }
 
 void ASomeCharacter::BeginPlay()
@@ -42,6 +41,9 @@ void ASomeCharacter::BeginPlay()
 		ASomeGameMode* SomeGameMode = Cast<ASomeGameMode>(GameMode);
 		SomeGameMode->OnDeathUnitEvent.AddUFunction(this, FName("Heal"), HealPower);
 	}
+
+	CheckAttack();
+	CheckProjectile();
 }
 
 void ASomeCharacter::Tick(float DeltaTime)
@@ -56,7 +58,7 @@ void ASomeCharacter::Tick(float DeltaTime)
 
 void ASomeCharacter::Fire()
 {
-	if (ProjectileClass)
+	if (IsReadyToFire)
 	{
 		FVector SpawnLoc = ProjectileSpawnPoint->GetComponentLocation();
 		FRotator SpawnRot = ProjectileSpawnPoint->GetComponentRotation();
@@ -66,7 +68,7 @@ void ASomeCharacter::Fire()
 
 void ASomeCharacter::Attack()
 {
-	if (HammerAttackAnimation)
+	if (IsReadyToAttack)
 	{
 		GetMesh()->PlayAnimation(HammerAttackAnimation, false);
 	}
@@ -74,7 +76,6 @@ void ASomeCharacter::Attack()
 
 void ASomeCharacter::OnDamage(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
 {
-
 	if (OtherActor->GetClass() == ProjectileClass)
 	{
 		DamageToApply = FMath::Min(Health, DamageToApply);
@@ -88,7 +89,6 @@ void ASomeCharacter::OnDamage(UPrimitiveComponent* HitComponent, AActor* OtherAc
 	{
 		Destroy();
 	}
-	
 }
 
 void ASomeCharacter::Heal(float HealAmount)
@@ -104,13 +104,38 @@ void ASomeCharacter::Heal(float HealAmount)
 
 void ASomeCharacter::StopAnimation()
 {
-	if (HammerReturnAnimation)
+	if (IsReadyToAttack)
 	{
 		GetMesh()->PlayAnimation(HammerReturnAnimation, false);
 	}
 }
 
-float ASomeCharacter::GetHealth()
+void ASomeCharacter::CheckProjectile()
 {
-	return Health;
+	if (ProjectileClass)
+	{
+		IsReadyToFire = true;
+	}
+	else
+	{
+#if UE_BUILD_DEVELOPMENT
+		UE_LOG(LogTemp, Warning, TEXT("Projectiles didnt selected!"));
+#endif
+		IsReadyToFire = false;
+	}
+}
+
+void ASomeCharacter::CheckAttack()
+{
+	if (HammerAttackAnimation && HammerReturnAnimation)
+	{
+		IsReadyToAttack = true;
+	}
+	else
+	{
+#if UE_BUILD_DEVELOPMENT
+		UE_LOG(LogTemp, Warning, TEXT("Attack animations didnt selected!"));
+#endif
+		IsReadyToAttack = false;
+	}
 }

@@ -66,12 +66,14 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Damage")
 	float DamageToApply = 15.0f;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Damage")
-	int32 Avoidance = 50;
 
-	UFUNCTION()
-	float GetHealth();
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
 	float Health{ 100 };
 
+private:
+	void CheckProjectile();
+	void CheckAttack();
+
+	bool IsReadyToFire;
+	bool IsReadyToAttack;
 };

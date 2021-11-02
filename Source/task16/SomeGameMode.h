@@ -21,8 +21,4 @@ public:
 	FOnDamageEvent OnDamageEvent;
 	FOnDeathUnitEvent OnDeathUnitEvent;
 
-	//float SuccessHits;
-
-	UFUNCTION()
-		void HitSuccess();
 };

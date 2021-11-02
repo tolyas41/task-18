@@ -24,6 +24,5 @@ private:
 	UFUNCTION()
 	void OnOverlap(class AActor* OverlappedActor, class AActor* OtherActor);
 
-	int32 score{ 0 };
-
+	int32 Score{ 0 };
 };

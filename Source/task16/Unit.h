@@ -50,7 +50,9 @@ public:
 
 	UFUNCTION()
 	void Attack();
+	void CheckAttack();
 
 private:
 	float Health{ 100 };
+	bool IsReadyToAttack;
 };

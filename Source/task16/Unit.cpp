@@ -23,6 +23,7 @@ void AUnit::BeginPlay()
 {
 	Super::BeginPlay();
 	GetCapsuleComponent()->OnComponentHit.AddDynamic(this, &AUnit::OnDamage);
+	CheckAttack();
 }
 
 void AUnit::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -50,7 +51,6 @@ void AUnit::Tick(float DeltaTime)
 	{
 		GetMesh()->GetAnimInstance()->InitializeAnimation();
 	}
-
 }
 
 void AUnit::OnDamage(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
@@ -86,16 +86,26 @@ void AUnit::OnDamage(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPri
 
 void AUnit::Attack()
 {
-	if (AttackAnimation)
+	if (IsReadyToAttack)
 	{
 		GetMesh()->PlayAnimation(AttackAnimation, false);
-	}
-
-	if (ProjectileClass)
-	{
 		FVector SpawnLoc = ProjectileSpawnPoint->GetComponentLocation();
 		FRotator SpawnRot = ProjectileSpawnPoint->GetComponentRotation();
 		AProjectile* ProjectileBullet = GetWorld()->SpawnActor<AProjectile>(ProjectileClass, SpawnLoc, SpawnRot);
 	}
+}
 
+void AUnit::CheckAttack()
+{
+	if (ProjectileClass && AttackAnimation)
+	{
+		IsReadyToAttack = true;
+	}
+	else
+	{
+#if UE_BUILD_DEVELOPMENT
+		UE_LOG(LogTemp, Warning, TEXT("Attack animation and projectile didnt selected!"));
+#endif
+		IsReadyToAttack = false;
+	}
 }
