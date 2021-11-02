@@ -33,9 +33,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Damage Causer")
 	TSubclassOf<AProjectile> ProjectileClass;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Damage Causer")
+	TSubclassOf<AProjectile> CharProjectileClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Damage Causer")
 	TSubclassOf<AHammerCollider> HammerClass;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attack")
-	UAnimationAsset* AttackAnimation;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
+	UAnimMontage* WalkAnimation;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
+	UAnimMontage* AttackAnimation;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
 	USceneComponent* ProjectileSpawnPoint;
 
@@ -44,7 +48,6 @@ public:
 
 	UFUNCTION()
 	virtual void OnDamage(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit) override;
-
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DamageReceived")
 	float DamageToApply = 50.0f;
 

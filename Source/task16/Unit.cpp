@@ -22,7 +22,6 @@ AUnit::AUnit()
 void AUnit::BeginPlay()
 {
 	Super::BeginPlay();
-	GetCapsuleComponent()->OnComponentHit.AddDynamic(this, &AUnit::OnDamage);
 	CheckAttack();
 }
 
@@ -37,6 +36,7 @@ void AUnit::EndPlay(const EEndPlayReason::Type EndPlayReason)
 void AUnit::PostActorCreated()
 {
 	Super::PostActorCreated();
+	GetCapsuleComponent()->OnComponentHit.AddDynamic(this, &AUnit::OnDamage);
 #if UE_BUILD_DEVELOPMENT
 	UE_LOG(LogTemp, Warning, TEXT("Unit %s arrived"), *(this->GetName()));
 #endif
@@ -46,16 +46,11 @@ void AUnit::PostActorCreated()
 void AUnit::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	if (!GetMesh()->IsPlaying())
-	{
-		GetMesh()->GetAnimInstance()->InitializeAnimation();
-	}
 }
 
 void AUnit::OnDamage(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
 {
-	if (OtherActor->GetClass() == HammerClass)
+	if (OtherActor->GetClass() == HammerClass || OtherActor->GetClass() == CharProjectileClass)
 	{
 		DamageToApply = FMath::Min(Health, DamageToApply);
 		Health -= DamageToApply;
@@ -69,6 +64,10 @@ void AUnit::OnDamage(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPri
 			ASomeGameMode* SomeGameMode = Cast<ASomeGameMode>(GameMode);
 			SomeGameMode->OnDamageEvent.Broadcast();
 		}
+	}
+	if (OtherActor->GetClass() == CharProjectileClass)
+	{
+		OtherActor->Destroy();
 	}
 
 	if (Health == 0)
@@ -88,7 +87,7 @@ void AUnit::Attack()
 {
 	if (IsReadyToAttack)
 	{
-		GetMesh()->PlayAnimation(AttackAnimation, false);
+		PlayAnimMontage(AttackAnimation);
 		FVector SpawnLoc = ProjectileSpawnPoint->GetComponentLocation();
 		FRotator SpawnRot = ProjectileSpawnPoint->GetComponentRotation();
 		AProjectile* ProjectileBullet = GetWorld()->SpawnActor<AProjectile>(ProjectileClass, SpawnLoc, SpawnRot);

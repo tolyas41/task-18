@@ -40,18 +40,22 @@ public:
 	UFUNCTION()
 	void Heal(float HealAmount);
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Bullets")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Damage Causer")
 	TSubclassOf<AProjectile> ProjectileClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Bullets")
+	TSubclassOf<AProjectile> CharProjectileClass;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Factory")
 	TSubclassOf<ASomeFactory> FactoryClass;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
 	USceneComponent* ProjectileSpawnPoint;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hammer")
 	TSubclassOf<AHammerCollider> HammerClass;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hammer")
-	UAnimationAsset* HammerAttackAnimation;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hammer")
-	UAnimationAsset* HammerReturnAnimation;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
+	UAnimMontage* HammerAttackAnimation;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
+	UAnimMontage* FireAttackAnimation;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
+	UAnimMontage* HammerReturnAnimation;
 	UPROPERTY()
 	AHammerCollider* HammerCollider;
 
@@ -63,17 +67,23 @@ public:
 	float HealPower = 8.0f;
 
 	FHealEvent OnHealEvent;
+	FTimerHandle AttackCooldownHandle;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Damage")
 	float DamageToApply = 15.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
 	float Health{ 100 };
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hammer")
+	float AttackCooldown = 2.0f;
 
 private:
 	void CheckProjectile();
 	void CheckAttack();
+	void AttackOnCooldown();
+	void Cooldown();
 
 	bool IsReadyToFire;
 	bool IsReadyToAttack;
+	bool IsAttackOnCooldown;
 };

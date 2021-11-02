@@ -24,7 +24,7 @@ void ASomeCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	GetCapsuleComponent()->OnComponentHit.AddDynamic(this, &ASomeCharacter::OnDamage);
-	GetMesh()->SetAnimationMode(EAnimationMode::AnimationSingleNode);
+	GetMesh()->SetAnimationMode(EAnimationMode::AnimationBlueprint);
 	if (HammerClass)
 	{
 		HammerCollider = GetWorld()->SpawnActor<AHammerCollider>(HammerClass);
@@ -49,29 +49,29 @@ void ASomeCharacter::BeginPlay()
 void ASomeCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	if (!GetMesh()->IsPlaying())
-	{
-		GetMesh()->GetAnimInstance()->InitializeAnimation();
-	}
 }
 
 void ASomeCharacter::Fire()
 {
-	if (IsReadyToFire)
+	if (IsReadyToFire && !IsAttackOnCooldown)
 	{
+		IsAttackOnCooldown = true;
+		PlayAnimMontage(FireAttackAnimation);
 		FVector SpawnLoc = ProjectileSpawnPoint->GetComponentLocation();
 		FRotator SpawnRot = ProjectileSpawnPoint->GetComponentRotation();
-		AProjectile* ProjectileBullet = GetWorld()->SpawnActor<AProjectile>(ProjectileClass, SpawnLoc, SpawnRot);
+		AProjectile* ProjectileBullet = GetWorld()->SpawnActor<AProjectile>(CharProjectileClass, SpawnLoc, SpawnRot);
 	}
+	Cooldown();
 }
 
 void ASomeCharacter::Attack()
 {
-	if (IsReadyToAttack)
+	if (IsReadyToAttack && !IsAttackOnCooldown)
 	{
-		GetMesh()->PlayAnimation(HammerAttackAnimation, false);
+		IsAttackOnCooldown = true;
+		PlayAnimMontage(HammerAttackAnimation);
 	}
+	Cooldown();
 }
 
 void ASomeCharacter::OnDamage(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
@@ -106,20 +106,20 @@ void ASomeCharacter::StopAnimation()
 {
 	if (IsReadyToAttack)
 	{
-		GetMesh()->PlayAnimation(HammerReturnAnimation, false);
+		PlayAnimMontage(HammerReturnAnimation);
 	}
 }
 
 void ASomeCharacter::CheckProjectile()
 {
-	if (ProjectileClass)
+	if (CharProjectileClass && FireAttackAnimation)
 	{
 		IsReadyToFire = true;
 	}
 	else
 	{
 #if UE_BUILD_DEVELOPMENT
-		UE_LOG(LogTemp, Warning, TEXT("Projectiles didnt selected!"));
+		UE_LOG(LogTemp, Warning, TEXT("Projectile and animation didnt selected!"));
 #endif
 		IsReadyToFire = false;
 	}
@@ -138,4 +138,17 @@ void ASomeCharacter::CheckAttack()
 #endif
 		IsReadyToAttack = false;
 	}
+}
+
+void ASomeCharacter::Cooldown()
+{
+	if (!GetWorldTimerManager().IsTimerActive(AttackCooldownHandle))
+	{
+		GetWorldTimerManager().SetTimer(AttackCooldownHandle, this, &ASomeCharacter::AttackOnCooldown, 0.1f, false, AttackCooldown);
+	}
+}
+
+void ASomeCharacter::AttackOnCooldown()
+{
+	IsAttackOnCooldown = false;
 }
