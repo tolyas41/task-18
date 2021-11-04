@@ -32,4 +32,6 @@ public:
 	void MoveRight(float Value);
 	void Fire();
 	void Attack();
+	void BuildTower();
+
 };

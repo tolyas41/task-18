@@ -42,6 +42,7 @@ void ASomePlayerController::SetupInputComponent()
 	InputComponent->BindAxis("MoveRight", this, &ASomePlayerController::MoveRight);
 	InputComponent->BindAction("Fire", IE_Pressed, this, &ASomePlayerController::Fire);
 	InputComponent->BindAction("Attack", IE_Pressed, this, &ASomePlayerController::Attack);
+	InputComponent->BindAction("BuildTower", IE_Pressed, this, &ASomePlayerController::BuildTower);
 }
 
 void ASomePlayerController::Rotate(float Value)
@@ -76,4 +77,9 @@ void ASomePlayerController::Fire()
 void ASomePlayerController::Attack()
 {
 	Character->Attack();
+}
+
+void ASomePlayerController::BuildTower()
+{
+	
 }
